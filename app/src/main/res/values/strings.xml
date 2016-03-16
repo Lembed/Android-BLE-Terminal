@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Android BLE Terminal</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="ble_not_supported">bluetooth not supported</string>
+    <string name="scan">scan</string>
+    <string name="paired">paired</string>
+    <string name="cancel">cancel</string>
+    <string name="select_device">select device</string>
+    <string name="scanning">scanning</string>
+    <string name="send">send</string>
+    <string name="connect">connect</string>
+    <string name="about">about</string>
+
+</resources>
