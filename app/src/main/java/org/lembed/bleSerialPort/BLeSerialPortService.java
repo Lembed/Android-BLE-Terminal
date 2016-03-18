@@ -92,8 +92,9 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
         this.readQueue = new ConcurrentLinkedQueue<BluetoothGattCharacteristic>();
     }
 
-    public void setContext(Context context) {
+    public BLeSerialPortService setContext(Context context) {
         this.context = context;
+        return this;
     }
 
     @Override
@@ -210,57 +211,69 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
             return false;
         }
 
-
         return true;
     }
 
     // Register the specified callback to receive serial port callbacks.
-    public void registerCallback(Callback callback) {
+    public BLeSerialPortService registerCallback(Callback callback) {
         if ((!callbacks.containsKey(callback)) && (callback != null))
             callbacks.put(callback, null);
+
+        return this;
     }
 
     // Unregister the specified callback.
-    public void unregisterCallback(Callback callback) {
+    public BLeSerialPortService unregisterCallback(Callback callback) {
         if (callbacks.containsKey(callback) && (callback != null))
             callbacks.remove(callback);
+
+        return this;
     }
 
     // Disconnect to a device if currently connected.
-    public void disconnect() {
+    public BLeSerialPortService disconnect() {
         if (gatt != null) {
             gatt.disconnect();
         }
         gatt = null;
         tx = null;
         rx = null;
+
+        return this;
     }
 
     //After using a given BLE device, the app must call this method to ensure resources are released properly.
-    public void close() {
-        if (gatt == null)   return;
-        disconnect();
-        gatt.close();
-        gatt = null;
+    public BLeSerialPortService close() {
+        if (gatt != null){
+            disconnect();
+            gatt.close();
+            gatt = null;
+        }
+
+        return this;
     }
 
     // Stop any in progress bluetooth device scan.
-    public void stopScan() {
+    public BLeSerialPortService stopScan() {
         if (adapter != null) {
             adapter.stopLeScan(this);
         }
+
+        return this;
     }
 
     // Start scanning for BLE devices.  Registered callback's onDeviceFound method will be called
     // when devices are found during scanning.
-    public void startScan() {
+    public BLeSerialPortService startScan() {
         if (adapter != null) {
             adapter.startLeScan(this);
         }
+
+        return this;
     }
 
     // Connect to the first available ble device.
-    public void connectFirstAvailable() {
+    public BLeSerialPortService connectFirstAvailable() {
         // Disconnect to any connected device.
         disconnect();
         // Stop any in progress device scan.
@@ -268,6 +281,8 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
         // Start scan and connect to first available device.
         connectFirst = true;
         startScan();
+
+        return this;
     }
 
     public BluetoothGattCallback mGattCallback  = new BluetoothGattCallback() {
@@ -376,8 +391,9 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
     };
 
     // Handlers for BluetoothGatt and LeScan events.
-    public void connect(BluetoothDevice device) {
+    public BLeSerialPortService connect(BluetoothDevice device) {
         gatt = device.connectGatt(context, false, mGattCallback);
+        return this;
     }
 
 

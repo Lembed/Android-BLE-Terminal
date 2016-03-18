@@ -23,6 +23,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class MainActivity extends Activity implements BLeSerialPortService.Callback, View.OnClickListener {
 
@@ -35,21 +38,21 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     private BLeSerialPortService serialPort;
     private final int REQUEST_DEVICE = 3;
     private final int REQUEST_ENABLE_BT = 2;
-    private  int index = 0,sindex=0;
+    private  int rindex = 0, sindex = 0;
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder rawBinder) {
-            serialPort = ((BLeSerialPortService.LocalBinder) rawBinder).getService();
+            serialPort = ((BLeSerialPortService.LocalBinder) rawBinder).getService()
 
-            //register the application context to service for callback
-            serialPort.setContext(getApplicationContext());
-            serialPort.registerCallback(MainActivity.this);
+                         //register the application context to service for callback
+                         .setContext(getApplicationContext())
+                         .registerCallback(MainActivity.this);
         }
 
         public void onServiceDisconnected(ComponentName classname) {
-            serialPort.unregisterCallback(MainActivity.this);
+            serialPort.unregisterCallback(MainActivity.this)
             //Close the bluetooth gatt connection.
-            serialPort.close();
+            .close();
         }
     };
 
@@ -168,7 +171,7 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                connect = (Button)findViewById(R.id.connect);
+                connect = (Button) findViewById(R.id.connect);
                 connect.setText(R.string.send);
             }
         });
@@ -202,9 +205,9 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     }
 
     @Override
-    public void onCommunicationError(int status,String msg) {
+    public void onCommunicationError(int status, String msg) {
         // get the send value bytes
-        if(status > 0) {
+        if (status > 0) {
             sindex = sindex + status;
             writeLine("< " + sindex + ":" + msg);
         }// when the send process found error, for example the send thread  time out
@@ -216,52 +219,67 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     @Override
     public void onReceive(Context context, BluetoothGattCharacteristic rx) {
         String msg = rx.getStringValue(0);
-        index = index + msg.length();
-        // data is received by the serial port.
-        writeLine("> " + index + ":" + msg );
-    }
+        rindex = rindex + msg.length();
+        writeLine("> " + rindex + ":" + msg);
+        String ms = "{\"aa\":\"12\",\"bb\":\"13\",\"cc\":\"14\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(ms);
+            int v = jsonObject.getInt("aa");
 
-    @Override
-    public void onDeviceFound(BluetoothDevice device) {
-        // Called when a UART device is discovered (after calling startScan).
-        writeLine("Found device : " + device.getAddress());
-        writeLine("Waiting for a connection ...");
-    }
+                 JSONObject object = new JSONObject(msg);
+                 writeLine(object.toString());
 
-    @Override
-    public void onDeviceInfoAvailable() {
-        writeLine(serialPort.getDeviceInfo());
-    }
+                 String s = object.getString("tt");
+                 writeLine(s);
+             } catch (JSONException e) {
+                 e.printStackTrace();
+             }
+                 // data is received by the serial port.
+                 writeLine(" > " + rindex + ": " + msg);
+             }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-        case REQUEST_DEVICE:
-            //When the DeviceListActivity return, with the selected device address
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                String deviceAddress = data.getStringExtra(BluetoothDevice.EXTRA_DEVICE);
-                BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(deviceAddress);
-                serialPort.connect(device);
-                showMessage(device.getName());
-            }
-            break;
-        case REQUEST_ENABLE_BT:
-            // When the request to enable Bluetooth returns
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Bluetooth has turned on ", Toast.LENGTH_SHORT).show();
-            } else {
-                // User did not enable Bluetooth or an error occurred
-                Toast.makeText(this, "Problem in BT Turning ON ", Toast.LENGTH_SHORT).show();
-            }
-            break;
-        default:
-            break;
-        }
-    }
+                 @Override
+                 public void onDeviceFound(BluetoothDevice device) {
+                 // Called when a UART device is discovered (after calling startScan).
+                 writeLine("Found device : " + device.getAddress());
+                 writeLine("Waiting for a connection ...");
 
-    private void showMessage(String msg) {
-        String TAG = MainActivity.class.getSimpleName();
-        Log.e(TAG, msg);
-    }
+             }
 
-}
+                 @Override
+                 public void onDeviceInfoAvailable() {
+                 writeLine(serialPort.getDeviceInfo());
+             }
+
+                 @Override
+                 public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                 switch (requestCode) {
+                 case REQUEST_DEVICE:
+                 //When the DeviceListActivity return, with the selected device address
+                 if (resultCode == Activity.RESULT_OK && data != null) {
+                 String deviceAddress = data.getStringExtra(BluetoothDevice.EXTRA_DEVICE);
+                 BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(deviceAddress);
+                 serialPort.connect(device);
+                 showMessage(device.getName());
+             }
+                 break;
+                 case REQUEST_ENABLE_BT:
+                 // When the request to enable Bluetooth returns
+                 if (resultCode == Activity.RESULT_OK) {
+                 Toast.makeText(this, "Bluetooth has turned on ", Toast.LENGTH_SHORT).show();
+             } else {
+                 // User did not enable Bluetooth or an error occurred
+                 Toast.makeText(this, "Problem in BT Turning ON ", Toast.LENGTH_SHORT).show();
+             }
+                 break;
+                 default:
+                 break;
+             }
+             }
+
+                 private void showMessage(String msg) {
+                 String TAG = MainActivity.class.getSimpleName();
+                 Log.e(TAG, msg);
+             }
+
+             }
