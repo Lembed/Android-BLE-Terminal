@@ -1,3 +1,23 @@
+// Copyright (c) 2016 Thomas
+
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
+
 package org.lembed.bleSerialPort;
 
 import android.app.Service;
@@ -67,7 +87,7 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
         public void onReceive(Context context, BluetoothGattCharacteristic rx);
         public void onDeviceFound(BluetoothDevice device);
         public void onDeviceInfoAvailable();
-        public void onCommunicationError(int status,String msg);
+        public void onCommunicationError(int status, String msg);
     }
 
     // Return instance of BluetoothGatt.
@@ -140,7 +160,7 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
         gatt.writeCharacteristic(tx);
         while (writeInProgress) {
             if (System.currentTimeMillis() - beginMillis > CommunicationStatus.SEND_TIME_OUT_MILLIS) {
-                notifyOnCommunicationError(CommunicationStatus.COMMUNICATION_TIMEOUT,null);
+                notifyOnCommunicationError(CommunicationStatus.COMMUNICATION_TIMEOUT, null);
                 break;
             }
         } ; // Wait for the flag to clear in onCharacteristicWrite
@@ -244,7 +264,7 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
 
     //After using a given BLE device, the app must call this method to ensure resources are released properly.
     public BLeSerialPortService close() {
-        if (gatt != null){
+        if (gatt != null) {
             disconnect();
             gatt.close();
             gatt = null;
@@ -359,7 +379,7 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
             super.onCharacteristicWrite(gatt, characteristic, status);
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                notifyOnCommunicationError(characteristic.getStringValue(0).length(),characteristic.getStringValue(0));
+                notifyOnCommunicationError(characteristic.getStringValue(0).length(), characteristic.getStringValue(0));
             }
             writeInProgress = false;
         }
@@ -468,10 +488,10 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
             }
         }
     }
-    private void notifyOnCommunicationError(int status,String msg) {
+    private void notifyOnCommunicationError(int status, String msg) {
         for (Callback cb : callbacks.keySet()) {
             if (cb != null) {
-                cb.onCommunicationError(status,msg);
+                cb.onCommunicationError(status, msg);
             }
         }
     }
