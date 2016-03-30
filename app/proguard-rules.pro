@@ -15,3 +15,10 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontoptimize
+-allowaccessmodification
+
+-dontobfuscate
+-overloadaggressively
+-useuniqueclassmembernames
