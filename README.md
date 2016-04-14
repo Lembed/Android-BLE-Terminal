@@ -3,6 +3,7 @@ Android Bluetooth Low Energy Terminal build with Android studio
 
 [![Android-BLE-Terminal](https://img.shields.io/badge/build-passing-blue.svg)]()
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Lembed/Android-BLE-Terminal/master/LICENSE)
+[![Android-BLE-Terminal](https://img.shields.io/badge/version-1.0-yellow.svg)]()
 
 
 Android 4.3 introduces built-in platform support for Bluetooth Low Energy ,
