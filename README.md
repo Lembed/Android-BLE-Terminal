@@ -13,5 +13,13 @@ such as proximity sensors, heart rate monitors, fitness devices, and so on.
 ## require
 Android (API Level 18 or above) & Android studio
 
+## Feature
+
+1. async connect and data operate.
+2. data encode/decode with utf-8 format.
+3. background server with low payload to your phone.
+4. easy extension display text widget.
+5. easy wrapped communication interface.
+
 ## License
 [MIT](https://github.com/Lembed/Android-BLE-Terminal/blob/master/LICENSE)
