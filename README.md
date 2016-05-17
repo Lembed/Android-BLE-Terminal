@@ -10,7 +10,7 @@ Android 4.3 introduces built-in platform support for Bluetooth Low Energy ,
 allows Android apps to communicate with BLE devices that have low power requirements, 
 such as proximity sensors, heart rate monitors, fitness devices, and so on.
 
-## require
+## Require
 Android (API Level 18 or above) & Android studio
 
 ## Feature
@@ -20,6 +20,25 @@ Android (API Level 18 or above) & Android studio
 3. background server with low payload to your phone.
 4. easy extension display text widget.
 5. easy wrapped communication interface.
+
+## Build in docker(dir docker)
+a docker image used to build the project
+to build the docker image
+
+```bash
+docker build -t="android-gradle" .
+```
+
+enter the docker and build the project
+
+```bash
+docker run -v $(pwd):/opt/ws -it android-gradle bash
+git clone https://github.com/Lembed/Android-BLE-Terminal.git
+cd Android-BLE-Terminal
+./gradlew build
+
+```
+
 
 ## License
 [MIT](https://github.com/Lembed/Android-BLE-Terminal/blob/master/LICENSE)
