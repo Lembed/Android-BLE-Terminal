@@ -42,3 +42,4 @@ cd Android-BLE-Terminal
 
 ## License
 [MIT](https://github.com/Lembed/Android-BLE-Terminal/blob/master/LICENSE)
+[![Analytics](https://ga-beacon.appspot.com/UA-67438080-1/Android-BLE-Terminal/readme?pixel)](https://github.com/Lembed/Android-BLE-Terminal)
