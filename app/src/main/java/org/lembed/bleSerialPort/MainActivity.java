@@ -33,7 +33,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -55,7 +54,7 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     private BLeSerialPortService serialPort;
     private final int REQUEST_DEVICE = 3;
     private final int REQUEST_ENABLE_BT = 2;
-    private  int rindex = 0, sindex = 0;
+    private  int rindex = 0;
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder rawBinder) {
@@ -110,14 +109,6 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
         bindService(bindIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    // OnCreate, called once to initialize the activity.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
     // OnResume, called right before UI is displayed.  Connect to the bluetooth device.
     @Override
     protected void onResume() {
@@ -152,6 +143,7 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbindService(mServiceConnection);
     }
 
     @Override
@@ -177,8 +169,6 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_about) {
-            Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -283,8 +273,7 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     }
 
     private void showMessage(String msg) {
-        String TAG = MainActivity.class.getSimpleName();
-        Log.e(TAG, msg);
+        Log.e(MainActivity.class.getSimpleName(), msg);
     }
 
 }

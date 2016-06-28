@@ -31,13 +31,6 @@
             android:textColor="@color/colorContent"
             android:textSize="15sp" />
 
-        <ImageView
-            android:id="@+id/about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_menu_info_details" />
     </RelativeLayout>
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -47,6 +40,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="2"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:stackFromBottom="true" />
 
         <TextView

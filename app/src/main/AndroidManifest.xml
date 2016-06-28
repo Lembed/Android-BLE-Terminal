@@ -30,7 +30,6 @@
 
         <service android:name=".BLeSerialPortService" />
 
-        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>

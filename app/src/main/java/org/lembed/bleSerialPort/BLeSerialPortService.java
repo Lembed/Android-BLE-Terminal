@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -44,6 +45,7 @@ import java.lang.String;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("deprecation")
 public class BLeSerialPortService extends Service implements BluetoothAdapter.LeScanCallback {
 
     public static final UUID SERIAL_SERVICE_UUID = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
@@ -71,7 +73,6 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
     // Device Information state.
     private BluetoothGattCharacteristic disManuf;
     private BluetoothGattCharacteristic disModel;
-    private BluetoothGattCharacteristic disHWRev;
     private BluetoothGattCharacteristic disSWRev;
     private boolean disAvailable;
 
@@ -104,7 +105,6 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
         this.rx = null;
         this.disManuf = null;
         this.disModel = null;
-        this.disHWRev = null;
         this.disSWRev = null;
         this.disAvailable = false;
         this.connectFirst = false;
@@ -469,6 +469,7 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
         for (Callback cb : callbacks.keySet()) {
             if (cb != null ) {
                 cb.onReceive(context, rx);
+                showMessage(rx.getStringValue(0));
             }
         }
     }
@@ -554,5 +555,9 @@ public class BLeSerialPortService extends Service implements BluetoothAdapter.Le
             }
         }
         return uuids;
+    }
+
+    private void showMessage(String msg){
+        Log.e(BLeSerialPortService.class.getSimpleName(),msg);
     }
 }
