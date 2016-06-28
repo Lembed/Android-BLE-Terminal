@@ -147,6 +147,11 @@ public class MainActivity extends Activity implements BLeSerialPortService.Callb
     }
 
     @Override
+    public  void onBackPressed() {
+        finish();
+    }
+
+    @Override
     public void onClick(View v) {
         Button bt = (Button) v;
         if (v.getId() == R.id.connect) {
